@@ -43,6 +43,7 @@ const App = () => {
             messaging.connectWithPromise().then(response => {
                 console.log("Successfully connected to Solace Cloud.", response);
                 messaging.subscribe("notification");
+                messaging.subscribe("C138/queueUpdate"); // mock customer ID
                 setConnected(true);
             }).catch(error => {
                 console.log("Unable to establish connection with Solace Cloud, see above logs for more details.", error);
