@@ -1,0 +1,20 @@
+[
+  {
+    "barberID": "B123",
+    "fname": "Paul",
+    "lname": "Walks",
+    "queue": []
+  },
+  {
+    "barberID": "B124",
+    "fname": "John",
+    "lname": "Doe",
+    "queue": []
+  },
+  {
+    "barberID": "B125",
+    "fname": "Jane",
+    "lname": "Scott",
+    "queue": []
+  }
+]
