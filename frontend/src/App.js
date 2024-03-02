@@ -16,8 +16,16 @@ const App = () => {
     }
 
     const handleSendClick = () => {
-        let message = new Paho.Message(JSON.stringify({text: "SOmething!"}));
-        message.destinationName = "queue";
+        let message = new Paho.Message(JSON.stringify(
+            {
+                "customerID": "C138",
+                "fname": "test_fname",
+                "lname": "test_lname",
+                "waitTime": 0,
+                "barberID": "B124"
+            }
+        ));
+        message.destinationName = "queueRequest";
         messaging.send(message);
     }
 
