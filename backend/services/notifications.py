@@ -9,6 +9,19 @@ server1 = Flask(__name__)
 
 load_dotenv()
 
+emailObj = {
+  "sender" : 'dev0932@outlook.com',
+  "message" : f"""\
+            Subject: $SUBJECT
+            To: <dev0932@outlook.com>
+            From: "dev0932@outlook.com"
+
+            $EMAILCONTENT
+            """
+}
+
+
+
 # Callback on connection
 def on_connect(client, userdata, flags, rc):
   print(f'Connected (Result: {rc})')
@@ -22,7 +35,22 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
   print(f'Message received on topic: {msg.topic}. Message: {msg.payload}')
   #  GIve notification
-  client.publish('notification', payload='HELLO FROM NOTIFICATION SERVER')
+  if(notifType == 'customerTurn'):
+    try:
+      server = smtplib.SMTP('smtp-mail.outlook.com', 587)
+      server.starttls()  # Upgrade the connection to a secure one using TLS
+      server.login('dev0932@outlook.com', 'outlook!')
+      emailObj["message"] = "Dear Customer,\n It's your turn in the queue!! \n - MyBarbers"
+      print(emailObj["message"] )
+      server.sendmail(emailObj["sender"], notifiedUser["email"], emailObj["message"])
+      server.quit()
+      print("Successfully sent email")
+    except smtplib.SMTPException:
+      print("Error: unable to send email")
+    except Exception as e:
+      print(e)
+
+  # client.publish('notification', payload='HELLO FROM NOTIFICATION SERVER')
 
 
 
