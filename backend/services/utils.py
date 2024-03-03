@@ -24,6 +24,14 @@ def initialize_barber_queue_data():
     barbers[1]['queue'].append(customers[i+5])
   for i in range(0, 6):
     barbers[2]['queue'].append(customers[i+7])
+  for i in range (0, 3):
+    barbers[3]['queue'].append(customers[i+13])
+  for i in range (0, 4):
+    barbers[4]['queue'].append(customers[i+16])
+  for i in range (0, 1):
+    barbers[5]['queue'].append(customers[i+20])
+  for i in range (0, 0):
+    barbers[6]['queue'].append(customers[i+21])
   write_json_data(barbers_filepath, barbers)
 
 def test_generate_barber_queue_data():
