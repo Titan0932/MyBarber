@@ -1,80 +1,67 @@
 [
   {
-    "customerID": "C123",
+    "id": "C123",
     "fname": "Jason",
-    "lname": "Davis",
-    "waitTime": 0
+    "lname": "Davis"
   },
   {
-    "customerID": "C124",
+    "id": "C124",
     "fname": "Linda",
-    "lname": "Johnson",
-    "waitTime": 0
+    "lname": "Johnson"
   },
   {
-    "customerID": "C125",
+    "id": "C125",
     "fname": "Kathy",
-    "lname": "Smith",
-    "waitTime": 0
+    "lname": "Smith"
   },
   {
-    "customerID": "C126",
+    "id": "C126",
     "fname": "Emma",
-    "lname": "Wilson",
-    "waitTime": 0
+    "lname": "Wilson"
   },
   {
-    "customerID": "C127",
+    "id": "C127",
     "fname": "Oliver",
-    "lname": "Smith",
-    "waitTime": 0
+    "lname": "Smith"
   },
   {
-    "customerID": "C128",
+    "id": "C128",
     "fname": "Ava",
-    "lname": "Brown",
-    "waitTime": 0
+    "lname": "Brown"
   },
   {
-    "customerID": "C129",
+    "id": "C129",
     "fname": "Liam",
-    "lname": "Jones",
-    "waitTime": 0
+    "lname": "Jones"
   },
   {
-    "customerID": "C130",
+    "id": "C130",
     "fname": "Sophia",
-    "lname": "Garcia",
-    "waitTime": 0
+    "lname": "Garcia"
   },
   {
-    "customerID": "C131",
+    "id": "C131",
     "fname": "Mason",
-    "lname": "Miller",
-    "waitTime": 0
+    "lname": "Miller"
   },
   {
-    "customerID": "C132",
+    "id": "C132",
     "fname": "Isabella",
-    "lname": "Chen",
-    "waitTime": 0
+    "lname": "Chen"
   },
   {
-    "customerID": "C133",
+    "id": "C133",
     "fname": "Ethan",
-    "lname": "Martinez",
-    "waitTime": 0
+    "lname": "Martinez"
   },
   {
-    "customerID": "C134",
+    "id": "C134",
     "fname": "Mia",
-    "lname": "Rodriguez",
-    "waitTime": 0
+    "lname": "Rodriguez"
   },
   {
-    "customerID": "C135",
+    "id": "C135",
     "fname": "Noah",
-    "lname": "Lopez",
-    "waitTime": 0
+    "lname": "Lopez"
   }
 ]

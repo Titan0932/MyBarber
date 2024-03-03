@@ -12,8 +12,8 @@ const App = () => {
     useEffect(() => {
         messaging.connectWithPromise().then(response => {
             console.log("Successfully connected to Solace Cloud.", response);
-            messaging.subscribe(`${user_id}/queueResponse`); 
-            messaging.subscribe(`${user_id}/dequeueResponse`);
+            messaging.subscribe(`enqueueResponse/${user_id}`); 
+            messaging.subscribe(`dequeueResponse/${user_id}`);
             setConnected(true);
         }).catch(error => {
             console.log("Unable to establish connection with Solace Cloud, see above logs for more details.", error);
@@ -25,7 +25,7 @@ const App = () => {
         setMessages(prevMessages => [...prevMessages, message.payloadString]);
     }
 
-    const handleQueueClick = () => {
+    const handleEnqueueClick = () => {
         let message = new Paho.Message(JSON.stringify(
             {
                 "customerID": "C138",
@@ -35,11 +35,11 @@ const App = () => {
                 "barberID": "B124"
             }
         ));
-        message.destinationName = "queueRequest";
+        message.destinationName = "enqueueRequest";
         messaging.send(message);
     }
 
-    const handleDequeClick = () => {
+    const handleDequeueClick = () => {
         let message = new Paho.Message(JSON.stringify(
             {
                 "customerID": "C138",
@@ -56,10 +56,8 @@ const App = () => {
     return (
         <div className="App">
             <div className="buttons">
-                {/* <button onClick={handleConnectClick1}>{connected ? 'Disconnect' : 'Connect'}</button>
-                <button onClick={handleConnectClick2}>{'Connect2'}</button> */}
-                {connected ? <button onClick={handleQueueClick}>Queue</button> : <button disabled>Queue</button>}
-                <button onClick={handleDequeClick}>Dequeue</button>
+                {connected ? <button onClick={handleEnqueueClick}>Enqueue</button> : <button disabled>Queue</button>}
+                <button onClick={handleDequeueClick}>Dequeue</button>
             </div>
             <ol>
                 {messages.map((message, index) => {

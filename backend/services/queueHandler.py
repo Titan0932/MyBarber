@@ -5,20 +5,21 @@ import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 import os
 import json
-from backend.services.utils import generate_barber_queue_data, load_json_data, update_wait_times
+from backend.services.utils import initialize_barber_queue_data, load_json_data, write_json_data
 
 queueHandler = Flask(__name__)
 
 load_dotenv()
 
 # load mock data
-barbers = generate_barber_queue_data()
+initialize_barber_queue_data()
+barbers = load_json_data(os.path.join('data', 'barbers.json'))
 customers = load_json_data(os.path.join('data', 'customers.json'))
 
 # Callback on connection
 def on_connect(client, userdata, flags, rc):
   print(f'Connected (Result: {rc})')
-  client.subscribe('queueRequest')
+  client.subscribe('enqueueRequest')
   client.subscribe('dequeueRequest')
 
 # Callback when message is received
@@ -26,62 +27,57 @@ def on_message(client, userdata, msg):
   print(f'Message received on topic: {msg.topic}. Message: {msg.payload}')
   event = json.loads(msg.payload)
   if msg.topic == 'queueRequest':
-    handle_queue_request(msg)
+    handle_queue_request(client, event)
   else:
-    handle_dequeue_request(msg)
-
+    handle_dequeue_request(client, event)
+  client.publish(f'queueUpdate', payload=json.dumps(barbers))
 
 # add customer to queue
 def add_to_queue(customer, barberID):
   customers.append(customer)
   for barber in barbers:
-    if barber['barberID'] == barberID:
-      last_wait_time = barber['queue'][-1]['waitTime']
-      customer['waitTime'] = last_wait_time + 30 # constant so far
+    if barber['id'] == barberID:
       barber['queue'].append(customer)
+      with open(os.path.join('data', 'barbers.json'), 'w') as file:
+        json.dump(barbers, file)
       return
     
-def remove_from_queue(barberID, customerID):
+def remove_from_queue(customerID, barberID):
   customers.pop(-1)
   for barber in barbers:
-    if barber['barberID'] == barberID:
-      barber['queue'] = [customer for customer in barber['queue'] if customer['customerID'] != customerID]
-      update_wait_times(barber['queue'])
+    if barber['id'] == barberID:
+      barber['queue'] = [customer for customer in barber['queue'] if customer['id'] != customerID]
+      with open(os.path.join('data', 'barbers.json'), 'w') as file:
+        json.dump(barbers, file)
       return
     
 def get_queue_position(barberID, customerID):
   for barber in barbers:
-    if barber['barberID'] == barberID:
+    if barber['id'] == barberID:
       queue = barber['queue']
       for i in range(len(queue)):
-        if queue[i]['customerID'] == customerID:
+        if queue[i]['id'] == customerID:
           return i
   return -1
 
-def handle_queue_request(event):
+def handle_queue_request(client, event):
   customerID = event['customerID']
-  for customer in customers:
-    if customer['customerID'] == customerID:
+  customer = {}
+  for c in customers:
+    if c['id'] == customerID:
+      customer = c
       return
   barberID = event['barberID']
-  del event['barberID']
-  customer = event
-  add_to_queue(event, barberID)
-  responseMsg = json.dumps({"waitTime": customer['waitTime'], "queuePos": get_queue_position(barberID, customerID)})
-  client.publish(f'{customerID}/queueResponse', payload=responseMsg)
+  add_to_queue(customer, barberID)
+  responseMsg = json.dumps({"queuePos": get_queue_position(barberID, customerID)})
+  client.publish(f'enqueueResponse/{customerID}', payload=responseMsg)
 
-def handle_dequeue_request(event):
+def handle_dequeue_request(client, event):
   customerID = event['customerID']
   barberID = event['barberID']
-  remove_from_queue(barberID, customerID)
-  responseMsg = json.dumps({"message": "Customer removed from queue"})
-  client.publish(f'{customerID}dequeueUserResponse', payload=responseMsg)
-  # we can add dequeueFromBarberResponse in the future
-  client.publish(f'{barberID}dequeueResponse', payload=responseMsg)
-
-
-  # update wait time for current customers
-
+  remove_from_queue(customerID, barberID)
+  responseMsg = json.dumps({"message": "You are removed from queue"})
+  client.publish(f'dequeueResponse/{customerID}', payload=responseMsg)
   
 client = mqtt.Client(transport='websockets')
 client.on_connect = on_connect
