@@ -38,8 +38,8 @@ def add_to_queue(customer, barberID):
   for barber in barbers:
     if barber['id'] == barberID:
       barber['queue'].append(customer)
-      with open(os.path.join('data', 'barbers.json'), 'w') as file:
-        json.dump(barbers, file)
+      write_json_data(os.path.join('data', 'barbers.json'), barbers)
+      write_json_data(os.path.join('data', 'customers.json'), customers)
       return
     
 def remove_from_queue(customerID, barberID):
@@ -47,8 +47,8 @@ def remove_from_queue(customerID, barberID):
   for barber in barbers:
     if barber['id'] == barberID:
       barber['queue'] = [customer for customer in barber['queue'] if customer['id'] != customerID]
-      with open(os.path.join('data', 'barbers.json'), 'w') as file:
-        json.dump(barbers, file)
+      write_json_data(os.path.join('data', 'barbers.json'), barbers)
+      write_json_data(os.path.join('data', 'customers.json'), customers)
       return
     
 def get_queue_position(barberID, customerID):
