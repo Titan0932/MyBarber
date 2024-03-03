@@ -6,15 +6,14 @@ import './custom.css'; // Make sure to create this CSS file
 import messaging from "./Messaging";
 import data from './data/barbers.json'
 import Paho from "paho-mqtt";
-
-
+import profile from './unknown.png'
 
 
 const Table = () => {
-  const curUser = useRef({id: "C123", fname: "Jason", lname: "Davies"})
+  const [curUser, setcurUser] = useState({id: "C123", fname: "Jason", lname: "Davies"})
   const [barbers, setbarbers] = useState([])
   const user_id = "C138"; // mock user id
-
+  const [bookedBarb, setBookedBarb] = useState('')
   
   useEffect(() => {
     messaging.connectWithPromise().then(response => {
@@ -41,7 +40,15 @@ console.log(data)
             "barberID": barberID
         }
     ));
-    action == "BOOK" ? message.destinationName = "enqueueRequest" : message.destinationName = "dequeueRequest";
+    if(action == "BOOK") {
+      console.log("here!") 
+      message.destinationName = "enqueueRequest"
+      setBookedBarb(barberID)
+    } else{
+      console.log("NOWW here!") 
+      message.destinationName = "dequeueRequest";
+      setBookedBarb('')
+    }
     messaging.send(message);
 }
 
@@ -61,22 +68,28 @@ console.log(data)
         <thead>
           <tr>
             <th></th>
-            <th className="text-center">Barber</th>
+            <th className="">Barber</th>
             {/* <th>Available</th> */}
-            <th className="text-center">Queue Size</th>
-            <th className="text-center">Wait-time</th>
-            <th className="text-center">Actions</th>
+            <th className="">Queue Size</th>
+            <th className="">Wait-time</th>
+            <th className="">Actions</th>
           </tr>
         </thead>
         <tbody>
           {barbers?.map((curBarb) => (
-            <tr key={curBarb.id}>
-              <td className="text-center"><img src={'../public/img/unknown.png'} /></td>
-              <td className="text-center">{curBarb.fname + " " + curBarb.lname}</td>
+            <tr key={curBarb.id} style={{padding: "1.5rem", "height": "4rem"}} >
+              <td className="text-center align-middle" style={{"width": "2rem"}}><img src={profile} style={{width: "2rem"}} /></td>
+              <td className="p-2 align-middle">{curBarb.fname + " " + curBarb.lname}</td>
               {/* <td>{curBarb.available? "YES!" : "No :("}</td> */}
-              <td className="text-center">{curBarb.queue.length}</td>
-              <td className="text-center">{curBarb.queue.length * 30} </td>
-              <td className="text-center"><button className="rounded border-1" onClick={() => {handleBook(curBarb["id"], (curBarb.queue.map((user)=> user.id == curUser.id) == false? "BOOKED!": "BOOK" ))}}>Book</button></td>
+              <td className="p-2 align-middle">{curBarb.queue.length}</td>
+              <td className="p-2 align-middle">{curBarb.queue.length * 20} </td>
+              {console.log(curBarb)}
+              {console.log(bookedBarb)}
+              <td className="p-2 align-middle" style={{"width": "10rem"}}>
+                <button className="rounded border-1" style={{"border": curBarb.id == bookedBarb? "1px solid red": '1px solid green'}} onClick={() => {handleBook(curBarb["id"], (curBarb.id == bookedBarb? "UN-BOOK" : "BOOK"))}}>
+                  {curBarb.id == bookedBarb? "UN-BOOK" : "BOOK"}
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

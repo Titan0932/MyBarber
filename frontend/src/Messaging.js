@@ -9,11 +9,6 @@ class Messaging extends Paho.Client {
 		this.callbacks = {};
 	}
 
-	topicHandlers = {
-    'queueUpdate': this.handleQueueUpdate,
-    // Add more handlers for other topics as needed
-  };
-
 	connectWithPromise() {
 		return new Promise((resolve, reject) => {
 			options.onSuccess = resolve;
@@ -39,13 +34,13 @@ class Messaging extends Paho.Client {
 	handleMessage(message) {
     console.log("Received message", message.payloadString);
     const topic = message.destinationName;
-
-    if (this.callbacks.topic == "queueUpdate") {
-			let respObj = JSON.parse(message)
+    if (topic == "queueUpdate") {
+			console.log("AYYO")
+			let respObj = JSON.parse(message.payloadString)
       this.callbacks["queueUpdate"](respObj);
-    } else if(message.contains('enqueueRequest')){
+    } else if(message.payloadString.includes('enqueueRequest')){
       this.callbacks["enqueueRequest"](message);
-		}else if(message.contains('dequeueRequest')){
+		}else if(message.payloadString.includes('dequeueRequest')){
       this.callbacks["dequeueRequest"](message);
 		}else{
       console.log(`No handler for topic ${topic}`);
