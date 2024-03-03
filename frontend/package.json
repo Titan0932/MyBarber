@@ -62,7 +62,7 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js",
     "build": "node scripts/build.js",
     "deploy": "node deploy.js"
   },

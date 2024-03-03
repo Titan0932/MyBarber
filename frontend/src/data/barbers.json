@@ -4,31 +4,11 @@
     "fname": "Paul",
     "lname": "Walks",
     "queue": [
-      {
-        "id": "C123",
-        "fname": "Jason",
-        "lname": "Davis"
-      },
-      {
-        "id": "C124",
-        "fname": "Linda",
-        "lname": "Johnson"
-      },
-      {
-        "id": "C125",
-        "fname": "Kathy",
-        "lname": "Smith"
-      },
-      {
-        "id": "C126",
-        "fname": "Emma",
-        "lname": "Wilson"
-      },
-      {
-        "id": "C127",
-        "fname": "Oliver",
-        "lname": "Smith"
-      }
+      { "id": "C123", "fname": "Jason", "lname": "Davis" },
+      { "id": "C124", "fname": "Linda", "lname": "Johnson" },
+      { "id": "C125", "fname": "Kathy", "lname": "Smith" },
+      { "id": "C126", "fname": "Emma", "lname": "Wilson" },
+      { "id": "C127", "fname": "Oliver", "lname": "Smith" }
     ]
   },
   {
@@ -36,16 +16,8 @@
     "fname": "John",
     "lname": "Doe",
     "queue": [
-      {
-        "id": "C128",
-        "fname": "Ava",
-        "lname": "Brown"
-      },
-      {
-        "id": "C129",
-        "fname": "Liam",
-        "lname": "Jones"
-      }
+      { "id": "C128", "fname": "Ava", "lname": "Brown" },
+      { "id": "C129", "fname": "Liam", "lname": "Jones" }
     ]
   },
   {
@@ -53,36 +25,40 @@
     "fname": "Jane",
     "lname": "Scott",
     "queue": [
-      {
-        "id": "C130",
-        "fname": "Sophia",
-        "lname": "Garcia"
-      },
-      {
-        "id": "C131",
-        "fname": "Mason",
-        "lname": "Miller"
-      },
-      {
-        "id": "C132",
-        "fname": "Isabella",
-        "lname": "Chen"
-      },
-      {
-        "id": "C133",
-        "fname": "Ethan",
-        "lname": "Martinez"
-      },
-      {
-        "id": "C134",
-        "fname": "Mia",
-        "lname": "Rodriguez"
-      },
-      {
-        "id": "C135",
-        "fname": "Noah",
-        "lname": "Lopez"
-      }
+      { "id": "C130", "fname": "Sophia", "lname": "Garcia" },
+      { "id": "C131", "fname": "Mason", "lname": "Miller" },
+      { "id": "C132", "fname": "Isabella", "lname": "Chen" },
+      { "id": "C133", "fname": "Ethan", "lname": "Martinez" },
+      { "id": "C134", "fname": "Mia", "lname": "Rodriguez" },
+      { "id": "C135", "fname": "Noah", "lname": "Lopez" }
     ]
-  }
+  },
+  {
+    "id": "B126",
+    "fname": "David",
+    "lname": "Smith",
+    "queue": [
+      { "id": "C136", "fname": "Charlotte", "lname": "Hernandez" },
+      { "id": "C137", "fname": "Lucas", "lname": "Gonzalez" },
+      { "id": "C138", "fname": "Amelia", "lname": "Wilson" }
+    ]
+  },
+  {
+    "id": "B127",
+    "fname": "Michael",
+    "lname": "Johnson",
+    "queue": [
+      { "id": "C139", "fname": "Olivia", "lname": "Perez" },
+      { "id": "C140", "fname": "Aiden", "lname": "Sanchez" },
+      { "id": "C141", "fname": "Harper", "lname": "Ramirez" },
+      { "id": "C142", "fname": "Elijah", "lname": "Torres" }
+    ]
+  },
+  {
+    "id": "B128",
+    "fname": "James",
+    "lname": "Williams",
+    "queue": [{ "id": "C143", "fname": "Avery", "lname": "Flores" }]
+  },
+  { "id": "B129", "fname": "Robert", "lname": "Jones", "queue": [] }
 ]
