@@ -33,7 +33,7 @@ def on_message(client, userdata, msg):
   client.publish(f'queueUpdate', payload=json.dumps(barbers))
 
 # add customer to queue
-def add_to_queue(customer, barberID):
+def add_to_queue(customerID, barberID):
   if customer not in customers:
     customers.append(customer)
     write_json_data(os.path.join('data', 'customers.json'), customers)
@@ -67,10 +67,11 @@ def handle_enqueue_request(client, event):
   customerID = event['customerID']
   barberID = event['barberID']
 
-  for customer in customers:
-    if customer['id'] == customerID:
+  for constomer in customers:
+    if constomer['id'] == customerID:
       return
-  add_to_queue(customer, barberID)
+    
+  add_to_queue(customerID, barberID)
   responseMsg = json.dumps({"queuePos": get_queue_position(barberID, customerID)})
   client.publish(f'enqueueResponse/{customerID}', payload=responseMsg)
 
