@@ -1,4 +1,5 @@
 import React,{useState, useEffect, useRef} from "react";
+import random from 'random'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css'; // Make sure to create this CSS file
@@ -126,7 +127,13 @@ console.log(data)
 
 
 const App = () => {
-  const curUser = { id: "C149", fname: "Scarlett", lname: "Reyes" };
+  let curUser;
+  if (random.randomInt(0, 1000) < 500) {
+    curUser = { id: "C149", fname: "Scarlett", lname: "Reyes" };
+  } else {
+    curUser = { id: "C148", fname: "Jackson", lname: "Jimenez" };
+  }
+
   return (
     <div>
       <UserProfile user={curUser} />
