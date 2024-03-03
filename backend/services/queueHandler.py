@@ -68,7 +68,7 @@ def handle_enqueue_request(client, event):
 
   if customer is not None:
     add_to_queue(customer, barberID)
-    responseMsg = json.dumps({"id": customerID, "queuePos": get_queue_position(barberID, customerID)})
+    responseMsg = json.dumps({"id": customerID, "queuePos": get_queue_position(barberID, customerID), "message": "You are added to queue"})
     client.publish(f'enqueueResponse/{customerID}', payload=responseMsg)
 
 
