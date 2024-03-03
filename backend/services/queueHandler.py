@@ -44,7 +44,6 @@ def add_to_queue(customer, barberID):
       return
     
 def remove_from_queue(customerID, barberID):
-
   customers.pop(-1)
   for barber in barbers:
     if barber['id'] == barberID:
@@ -70,11 +69,11 @@ def handle_enqueue_request(client, event):
 
   for customer in customers:
     if customer['id'] == customerID:
-      add_to_queue(customer, barberID)
       return
-
+  add_to_queue(customer, barberID)
   responseMsg = json.dumps({"queuePos": get_queue_position(barberID, customerID)})
   client.publish(f'enqueueResponse/{customerID}', payload=responseMsg)
+
 
 def handle_dequeue_request(client, event):
   customerID = event['customerID']
