@@ -10,7 +10,7 @@ import profile from './unknown.png'
 
 
 const Table = () => {
-  const [curUser, setcurUser] = useState({id: "C134", fname: "Mia", lname: "Rodriguez"})
+  const [curUser, setcurUser] = useState({id: "C150", fname: "Levi", lname: "Collins"})
   const [barbers, setbarbers] = useState([])
   const [bookedBarb, setBookedBarb] = useState('')
   
@@ -19,14 +19,15 @@ const Table = () => {
         console.log("Successfully connected to Solace Cloud.", response);
         messaging.subscribe("queueUpdate");
         console.log("USERID: ", curUser.id)
-        curUser.id && messaging.subscribe(`enqueueRequest/${curUser.id}`);
+        curUser.id && messaging.subscribe(`enqueueResponse/${curUser.id}`);
+        curUser.id && messaging.subscribe(`dequeueResponse/${curUser.id}`);
         // messaging.subscribe("C138/queueUpdate"); // mock customer ID
     }).catch(error => {
         console.log("Unable to establish connection with Solace Cloud, see above logs for more details.", error);
     });
     messaging.register("queueUpdate",updateBarbers);
-    messaging.register("enqueueRequest",displayMsg);
-    messaging.register("dequeueUpdate",displayMsg);
+    messaging.register(`enqueueResponse/${curUser.id}`,displayMsg);
+    messaging.register(`dequeueResponse/${curUser.id}`,displayMsg);
     setbarbers(data);
 console.log(data)
   }, []);
@@ -43,11 +44,11 @@ console.log(data)
       console.log("here!") 
       console.log("BarberNew: ", barberID)
       console.log("booked: ", bookedBarb)
-      message.destinationName = "enqueueRequest"
+      message.destinationName = `enqueueRequest`
       setBookedBarb(barberID)
     } else{
       console.log("NOWW here!") 
-      message.destinationName = "dequeueRequest";
+      message.destinationName = `dequeueRequest`;
       setBookedBarb('')
     }
     messaging.send(message);
@@ -59,6 +60,7 @@ console.log(data)
   }
 
   const displayMsg = (msg) => {
+    console.log(msg)
     alert(msg)
   }
 
@@ -72,6 +74,7 @@ console.log(data)
             <th className="">Barber</th>
             {/* <th>Available</th> */}
             <th className="">Queue Size</th>
+            <th className="">Queue Position</th>
             <th className="">Wait-time</th>
             <th className="">Actions</th>
           </tr>
@@ -83,9 +86,8 @@ console.log(data)
               <td className="p-2 align-middle">{curBarb.fname + " " + curBarb.lname}</td>
               {/* <td>{curBarb.available? "YES!" : "No :("}</td> */}
               <td className="p-2 align-middle">{curBarb.queue.length}</td>
+              <td className="p-2 align-middle">{curBarb.id != bookedBarb? "--": curBarb.queue.map((cust, index) => (cust.id == curUser.id && index+1))}</td>
               <td className="p-2 align-middle">{curBarb.queue.length * 20} </td>
-              {console.log(curBarb)}
-              {console.log(bookedBarb)}
               <td className="p-2 align-middle" style={{"width": "10rem"}}>
                 <button className="rounded border-1" 
                     style={{"border": curBarb.id == bookedBarb? "1px solid red": '1px solid green'}} 
