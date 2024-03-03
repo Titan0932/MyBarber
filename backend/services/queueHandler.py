@@ -78,7 +78,7 @@ def handle_dequeue_request(client, event):
   for customer in customers:
     if customer['id'] == customerID:
       remove_from_queue(customerID, barberID)
-      responseMsg = json.dumps({"message": "You are removed from queue"})
+      responseMsg = json.dumps({"id": customerID, "message": "You are removed from queue"})
       client.publish(f'dequeueResponse/{customerID}', payload=responseMsg)
       return
   
