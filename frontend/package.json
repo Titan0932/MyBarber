@@ -62,7 +62,7 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js",
     "build": "node scripts/build.js",
     "deploy": "node deploy.js"
   },
@@ -133,5 +133,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

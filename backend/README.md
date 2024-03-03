@@ -17,8 +17,8 @@ windows: $ python -m pip install --upgrade pip
 $ pip install -r requirements.txt
 
 6. run the flask app
-mac/linux: $ export FLASK_APP=server1
-windows: $ set FLASK_APP=server1
+mac/linux: $ export FLASK_APP=queueHandler
+windows: $ set FLASK_APP=queueHandler
 
 then,
 $ flask run

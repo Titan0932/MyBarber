@@ -10,6 +10,7 @@ const Table = ({rows}) => {
   const [curUser, setcurUser] = useState({id: 1232, name: "Lucy Ann"})
   const [barbers, setbarbers] = useState([])
   const [bookedBarbers, setbookedBarbers] = useState([])
+  const user_id = "C138"; // mock user id
 
   useEffect(() => {
     messaging.connectWithPromise().then(response => {
