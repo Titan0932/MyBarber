@@ -1,17 +1,21 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, useRef} from "react";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css'; // Make sure to create this CSS file
 // import unknownImg from '../public/img/unknown.png'
 import messaging from "./Messaging";
+import data from './data/barbers.json'
 import Paho from "paho-mqtt";
 
-const Table = ({rows}) => {
-  const [curUser, setcurUser] = useState({id: 1232, name: "Lucy Ann"})
+
+
+
+const Table = () => {
+  const curUser = useRef({id: "C123", fname: "Jason", lname: "Davies"})
   const [barbers, setbarbers] = useState([])
-  const [bookedBarbers, setbookedBarbers] = useState([])
   const user_id = "C138"; // mock user id
 
+  
   useEffect(() => {
     messaging.connectWithPromise().then(response => {
         console.log("Successfully connected to Solace Cloud.", response);
@@ -25,6 +29,8 @@ const Table = ({rows}) => {
     messaging.register("queueUpdate",updateBarbers);
     messaging.register("enqueueRequest",displayMsg);
     messaging.register("dequeueUpdate",displayMsg);
+    setbarbers(data);
+console.log(data)
   }, []);
 
 
@@ -40,6 +46,7 @@ const Table = ({rows}) => {
 }
 
   const updateBarbers = (newState) => {
+    console.log(newState)
     setbarbers(newState)
   }
 
@@ -50,24 +57,26 @@ const Table = ({rows}) => {
 
   return (
     <div className="d-flex justify-content-center">
-      <table className="table styled-table">
+      <table className="table styled-table barbers">
         <thead>
           <tr>
             <th></th>
-            <th>Barber</th>
-            <th>Available</th>
-            <th>Wait-time</th>
-            <th>Actions</th>
+            <th className="text-center">Barber</th>
+            {/* <th>Available</th> */}
+            <th className="text-center">Queue Size</th>
+            <th className="text-center">Wait-time</th>
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map((item) => (
-            <tr key={item.id}>
-              <td><img src={'../public/img/unknown.png'} /></td>
-              <td>{item.name}</td>
-              <td>{item.available? "YES!" : "No :("}</td>
-              <td>{item.queue.map((user, index)=> user.id == curUser.id && index * 30)} </td>
-              <td><button className="rounded border-1" onClick={() => {handleBook()}}>Book</button></td>
+          {barbers?.map((curBarb) => (
+            <tr key={curBarb.id}>
+              <td className="text-center"><img src={'../public/img/unknown.png'} /></td>
+              <td className="text-center">{curBarb.fname + " " + curBarb.lname}</td>
+              {/* <td>{curBarb.available? "YES!" : "No :("}</td> */}
+              <td className="text-center">{curBarb.queue.length}</td>
+              <td className="text-center">{curBarb.queue.length * 30} </td>
+              <td className="text-center"><button className="rounded border-1" onClick={() => {handleBook(curBarb["id"], (curBarb.queue.map((user)=> user.id == curUser.id) == false? "BOOKED!": "BOOK" ))}}>Book</button></td>
             </tr>
           ))}
         </tbody>
@@ -79,17 +88,9 @@ const Table = ({rows}) => {
 
 
 const App = () => {
-  const rows = [
-    {
-      img: 'img/unknown.jpg',
-      id: 1232,
-      name: "John Not Doe",
-      queue: [{id: 111, name: "Lucy Ann"}, {id: 1232, name: "Lucy Ann"}],
-      available: true
-    }
-  ]
+  
   return (
-    <Table rows={rows} />
+    <Table/>
   );
 };
 
