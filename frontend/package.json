@@ -13,10 +13,11 @@
     "babel-loader": "8.0.6",
     "babel-plugin-named-asset-import": "^0.3.6",
     "babel-preset-react-app": "^9.1.1",
+    "bootstrap": "^5.3.3",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "css-loader": "3.4.2",
-    "dotenv": "8.2.0",
+    "dotenv": "^8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.2.0",
@@ -61,7 +62,7 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js",
     "build": "node scripts/build.js",
     "deploy": "node deploy.js"
   },

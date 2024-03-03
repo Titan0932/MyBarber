@@ -6,7 +6,7 @@ class Messaging extends Paho.Client {
 	constructor() {
 		super(options.invocationContext.host, Number(options.invocationContext.port), options.invocationContext.clientId);
 		this.onMessageArrived = this.handleMessage.bind(this);
-		this.callbacks = [];
+		this.callbacks = {};
 	}
 
 	connectWithPromise() {
@@ -25,15 +25,27 @@ class Messaging extends Paho.Client {
 		// Add auto connect logic with backoff here if you want to automatically reconnect
 	}
 
-	register(callback) {
-		this.callbacks.push(callback);
+	register(topic, callback) {
+		this.callbacks[topic]= callback;
 	}
 	
 	// called when a message arrives
 	handleMessage(message) {
-		console.log("Received message", message.payloadString);
-		this.callbacks.forEach(callback => callback(message));
-	}
+    console.log("Received message", message.payloadString);
+    const topic = message.destinationName;
+		let respObj = JSON.parse(message.payloadString)
+    if (topic === "queueUpdate") {
+			console.log("AYYO")
+      this.callbacks["queueUpdate"](respObj);
+    } else if(topic === `enqueueResponse/${respObj.id}`){
+			console.log("enqueueResponse--->")
+      this.callbacks[topic](respObj.message);
+		}else if(topic === `dequeueResponse/${respObj.id}`){
+      this.callbacks[topic](respObj.message);
+		}else{
+      console.log(`No handler for topic ${topic}`);
+    }
+  }
 }
 
 const messaging = new Messaging();
