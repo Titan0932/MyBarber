@@ -10,9 +10,8 @@ import profile from './unknown.png'
 
 
 const Table = () => {
-  const [curUser, setcurUser] = useState({id: "C123", fname: "Jason", lname: "Davies"})
+  const [curUser, setcurUser] = useState({id: "C134", fname: "Mia", lname: "Rodriguez"})
   const [barbers, setbarbers] = useState([])
-  const user_id = "C138"; // mock user id
   const [bookedBarb, setBookedBarb] = useState('')
   
   useEffect(() => {
@@ -42,6 +41,10 @@ console.log(data)
     ));
     if(action == "BOOK") {
       console.log("here!") 
+      if(barberID != '') { // means that there was another barber booked
+        message.destinationName = "dequeueRequest"
+        messaging.send(message)
+      }
       message.destinationName = "enqueueRequest"
       setBookedBarb(barberID)
     } else{
