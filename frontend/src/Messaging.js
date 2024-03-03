@@ -38,9 +38,9 @@ class Messaging extends Paho.Client {
 			console.log("AYYO")
 			let respObj = JSON.parse(message.payloadString)
       this.callbacks["queueUpdate"](respObj);
-    } else if(message.payloadString.includes('enqueueRequest')){
+    } else if(topic.includes('enqueueRequest')){
       this.callbacks["enqueueRequest"](message);
-		}else if(message.payloadString.includes('dequeueRequest')){
+		}else if(topic.includes('dequeueRequest')){
       this.callbacks["dequeueRequest"](message);
 		}else{
       console.log(`No handler for topic ${topic}`);

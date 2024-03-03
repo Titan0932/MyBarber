@@ -41,10 +41,8 @@ console.log(data)
     ));
     if(action == "BOOK") {
       console.log("here!") 
-      if(barberID != '') { // means that there was another barber booked
-        message.destinationName = "dequeueRequest"
-        messaging.send(message)
-      }
+      console.log("BarberNew: ", barberID)
+      console.log("booked: ", bookedBarb)
       message.destinationName = "enqueueRequest"
       setBookedBarb(barberID)
     } else{
@@ -89,7 +87,10 @@ console.log(data)
               {console.log(curBarb)}
               {console.log(bookedBarb)}
               <td className="p-2 align-middle" style={{"width": "10rem"}}>
-                <button className="rounded border-1" style={{"border": curBarb.id == bookedBarb? "1px solid red": '1px solid green'}} onClick={() => {handleBook(curBarb["id"], (curBarb.id == bookedBarb? "UN-BOOK" : "BOOK"))}}>
+                <button className="rounded border-1" 
+                    style={{"border": curBarb.id == bookedBarb? "1px solid red": '1px solid green'}} 
+                      onClick={() => {handleBook(curBarb["id"], (curBarb.id == bookedBarb? "UN-BOOK" : "BOOK"))}}
+                        disabled={bookedBarb.length>0 && curBarb.id != bookedBarb}>
                   {curBarb.id == bookedBarb? "UN-BOOK" : "BOOK"}
                 </button>
               </td>
